@@ -14,12 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class FileRepository implements PostRepository{
+public class FilePostRepository implements PostRepository{
 
     private final File file  = new File("./src/main/java/samryong/blogserver/repository/posts.json");
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public FileRepository(){
+    public FilePostRepository(){
         objectMapper.registerModule(new JavaTimeModule());
     }
     @Override
