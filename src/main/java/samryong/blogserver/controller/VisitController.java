@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @AllArgsConstructor
 public class VisitController {
     private final VisitService visitService;
-    @GetMapping("/")
+    @GetMapping
     public ConcurrentHashMap<String, Long> getVisit(HttpServletRequest request, HttpServletResponse response){
         String cookieName = "visitorCookie";
         String cookieValue = LocalDate.now().toString();
