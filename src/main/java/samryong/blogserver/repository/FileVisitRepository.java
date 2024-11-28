@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class FileVisitRepository implements VisitRepository{
 
-    private final File file  = new File("./src/main/java/samryong/blogserver/repository/visit.json");
+    private final File file  = new File(getClass().getClassLoader().getResource("visit.json").getFile());
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public FileVisitRepository(){

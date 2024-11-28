@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public class FilePostRepository implements PostRepository{
 
-    private final File file  = new File("./src/main/java/samryong/blogserver/repository/posts.json");
+    private final File file  = new File(getClass().getClassLoader().getResource("posts.json").getFile());
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public FilePostRepository(){
