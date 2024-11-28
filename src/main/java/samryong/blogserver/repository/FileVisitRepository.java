@@ -8,6 +8,7 @@ import samryong.blogserver.model.Post;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Repository
 public class FileVisitRepository implements VisitRepository{
 
-    private final File file  = new File(getClass().getClassLoader().getResource("visit.json").getFile());
+    private final String resourcePath = "visit.json";  // 리소스 경로
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public FileVisitRepository(){
@@ -28,10 +29,14 @@ public class FileVisitRepository implements VisitRepository{
 
     @Override
     public ConcurrentHashMap<String,Long> getVisit() {
-        try {
-            return objectMapper.readValue(file, new TypeReference<ConcurrentHashMap<String, Long>>() {
-            });
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+            if (inputStream == null) {
+                System.out.println("Resource not found: " + resourcePath);
+                return new ConcurrentHashMap<>();
+            }
+            return objectMapper.readValue(inputStream, new TypeReference<ConcurrentHashMap<String, Long>>() {});
         } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
             return new ConcurrentHashMap<>();
         }
     }
@@ -54,9 +59,12 @@ public class FileVisitRepository implements VisitRepository{
     }
     private void writeToFile(ConcurrentHashMap<String, Long> visit) {
         try {
+            // 파일을 쓸 때는 클래스패스 내의 실제 경로에 접근해야 하므로
+            // JAR 환경에서는 별도의 파일 시스템 경로를 설정하거나 외부 파일에 쓰는 방식으로 구현해야 할 수 있습니다.
+            File file = new File(getClass().getClassLoader().getResource(resourcePath).toURI());
             objectMapper.writeValue(file, visit);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Error writing to file: " + e.getMessage());
         }
     }
 }

@@ -9,6 +9,7 @@ import samryong.blogserver.model.Post;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,7 @@ import java.util.Optional;
 @Repository
 public class FilePostRepository implements PostRepository{
 
-    private final File file  = new File(getClass().getClassLoader().getResource("posts.json").getFile());
+    private final String resourcePath = "posts.json";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public FilePostRepository(){
@@ -24,11 +25,14 @@ public class FilePostRepository implements PostRepository{
     }
     @Override
     public List<Post> findAll() {
-        if (!file.exists()) return new ArrayList<>();
-        try {
-            return objectMapper.readValue(file, new TypeReference<>() {});
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+            if (inputStream == null) {
+                System.out.println("Resource not found: " + resourcePath);
+                return new ArrayList<>();
+            }
+            return objectMapper.readValue(inputStream, new TypeReference<>() {});
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println("Error reading file: " + e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -55,9 +59,10 @@ public class FilePostRepository implements PostRepository{
 
     private void writeToFile(List<Post> posts) {
         try {
+            File file = new File(getClass().getClassLoader().getResource(resourcePath).toURI());
             objectMapper.writeValue(file, posts);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Error writing to file: " + e.getMessage());
         }
     }
 }
