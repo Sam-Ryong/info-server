@@ -20,6 +20,7 @@ public class MemoryVisitRepository implements VisitRepository{
     @Override
     public void addToday() {
         visit.setToday(visit.getToday() + 1);
+        visit.setTotal(visit.getTotal() + 1);
     }
 
     @Override
