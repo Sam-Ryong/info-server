@@ -7,9 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 import samryong.blogserver.model.Post;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,10 +56,9 @@ public class FilePostRepository implements PostRepository{
     }
 
     private void writeToFile(List<Post> posts) {
-        try {
-            File file = new File(getClass().getClassLoader().getResource(resourcePath).toURI());
-            objectMapper.writeValue(file, posts);
-        } catch (Exception e) {
+        try (OutputStream outputStream = new FileOutputStream(getClass().getClassLoader().getResource(resourcePath).getFile())) {
+            objectMapper.writeValue(outputStream, posts);
+        } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
         }
     }

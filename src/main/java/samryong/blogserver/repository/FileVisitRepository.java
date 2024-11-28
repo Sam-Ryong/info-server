@@ -6,9 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Repository;
 import samryong.blogserver.model.Post;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -58,12 +56,9 @@ public class FileVisitRepository implements VisitRepository{
         writeToFile(visit);
     }
     private void writeToFile(ConcurrentHashMap<String, Long> visit) {
-        try {
-            // 파일을 쓸 때는 클래스패스 내의 실제 경로에 접근해야 하므로
-            // JAR 환경에서는 별도의 파일 시스템 경로를 설정하거나 외부 파일에 쓰는 방식으로 구현해야 할 수 있습니다.
-            File file = new File(getClass().getClassLoader().getResource(resourcePath).toURI());
-            objectMapper.writeValue(file, visit);
-        } catch (Exception e) {
+        try (OutputStream outputStream = new FileOutputStream(getClass().getClassLoader().getResource(resourcePath).getFile())) {
+            objectMapper.writeValue(outputStream, visit);
+        } catch (IOException e) {
             System.out.println("Error writing to file: " + e.getMessage());
         }
     }
