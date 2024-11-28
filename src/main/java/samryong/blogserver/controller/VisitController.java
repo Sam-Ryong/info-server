@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import samryong.blogserver.model.Visit;
 import samryong.blogserver.service.VisitService;
 
 import java.time.LocalDate;
@@ -18,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class VisitController {
     private final VisitService visitService;
     @GetMapping
-    public ConcurrentHashMap<String, Long> getVisit(HttpServletRequest request, HttpServletResponse response){
+    public Visit getVisit(HttpServletRequest request, HttpServletResponse response){
         String cookieName = "visitorCookie";
         String cookieValue = LocalDate.now().toString();
 
