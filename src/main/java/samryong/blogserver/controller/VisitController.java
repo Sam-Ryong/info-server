@@ -31,9 +31,12 @@ public class VisitController {
             for (Cookie cookie : cookies) {
 
                 if (cookieName.equals(cookie.getName())) {
-
-                    alreadyVisited = true;
-
+                    if (!(cookieValue.equals(cookie.getValue()))){
+                        cookie.setMaxAge(0);
+                    }
+                    else {
+                        alreadyVisited = true;
+                    }
 
                 }
             }
@@ -44,7 +47,10 @@ public class VisitController {
             Cookie newCookie = new Cookie(cookieName, cookieValue);
             newCookie.setMaxAge(24 * 60 * 60); // 1일 동안 유효
             newCookie.setPath("/"); // 전체 경로에서 유효
+            newCookie.setSecure(true);
+            newCookie.setAttribute("SameSite","None");
             response.addCookie(newCookie);
+
         }
 
         return visitService.getVisit();
