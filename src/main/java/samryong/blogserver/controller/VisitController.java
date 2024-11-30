@@ -26,11 +26,12 @@ public class VisitController {
         boolean alreadyVisited = false;
 
         // 쿠키 확인
-        Cookie[] cookies = request.getCookies();
+        Cookie[] cookies = request.getCookies();;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
+
                 if (cookieName.equals(cookie.getName())) {
-                    if (!cookieValue.equals(cookie.getValue())){
+                    if (!(cookieValue.equals(cookie.getValue()))){
                         cookie.setMaxAge(0);
                     }
                     else {
