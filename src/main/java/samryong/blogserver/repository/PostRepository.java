@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface PostRepository {
     List<Post> findAll();
     Optional<Post> findById(Long id);
+
+    List<Post> findByCategory(String category);
     void save(Post post);
     void deleteById(Long id);
 }

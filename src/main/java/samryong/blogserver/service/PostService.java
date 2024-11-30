@@ -21,6 +21,10 @@ public class PostService {
         return postRepository.findById(id);
     }
 
+    public List<Post> getPostByCategory(String category) {
+        return postRepository.findByCategory(category);
+    }
+
     public Post createPost(Post post) {
         post.setId(System.currentTimeMillis());
         post.setCreatedAt(LocalDateTime.now());

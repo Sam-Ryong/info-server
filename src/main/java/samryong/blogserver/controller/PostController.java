@@ -19,6 +19,11 @@ public class PostController {
         return postService.getAllPosts();
     }
 
+    @GetMapping("/category/{category}")
+    public List<Post> getPostsByCategory(@PathVariable String category){
+        return postService.getPostByCategory(category);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable Long id) {
         return postService.getPostById(id)

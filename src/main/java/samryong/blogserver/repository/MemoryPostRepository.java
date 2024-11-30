@@ -27,6 +27,17 @@ public class MemoryPostRepository implements PostRepository{
     }
 
     @Override
+    public List<Post> findByCategory(String category) {
+        List<Post> result = new ArrayList<>();
+        for (Post post : posts) {
+            if (post.getCategory().equals(category)){
+                result.add(post);
+            }
+        }
+        return result;
+    }
+
+    @Override
     public void save(Post post) {
         posts.removeIf(p -> p.getId().equals(post.getId()));
         posts.add(post);
