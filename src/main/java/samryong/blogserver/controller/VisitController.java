@@ -31,12 +31,9 @@ public class VisitController {
             for (Cookie cookie : cookies) {
 
                 if (cookieName.equals(cookie.getName())) {
-                    if (!(cookieValue.equals(cookie.getValue()))){
-                        cookie.setMaxAge(0);
-                    }
-                    else {
-                        alreadyVisited = true;
-                    }
+
+                    alreadyVisited = true;
+
 
                 }
             }
