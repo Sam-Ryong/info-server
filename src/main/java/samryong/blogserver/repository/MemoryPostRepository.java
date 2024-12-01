@@ -27,10 +27,10 @@ public class MemoryPostRepository implements PostRepository{
     }
 
     @Override
-    public List<Post> findByCategory(String category) {
+    public List<Post> findByUrl(String url) {
         List<Post> result = new ArrayList<>();
         for (Post post : posts) {
-            if (post.getCategory().equals(category)){
+            if (post.getUrl().equals(url)){
                 result.add(post);
             }
         }

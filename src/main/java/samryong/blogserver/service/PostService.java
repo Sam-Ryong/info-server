@@ -21,8 +21,8 @@ public class PostService {
         return postRepository.findById(id);
     }
 
-    public List<Post> getPostByCategory(String category) {
-        return postRepository.findByCategory(category);
+    public List<Post> getPostByUrl(String url) {
+        return postRepository.findByUrl(url);
     }
 
     public Post createPost(Post post) {
@@ -36,9 +36,6 @@ public class PostService {
         Optional<Post> existingPost = postRepository.findById(id);
         if (existingPost.isPresent()) {
             Post post = existingPost.get();
-            post.setTitle(updatedPost.getTitle());
-            post.setContent(updatedPost.getContent());
-            post.setAuthor(updatedPost.getAuthor());
             postRepository.save(post);
             return post;
         }

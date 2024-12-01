@@ -11,7 +11,7 @@ public interface PostRepository {
     List<Post> findAll();
     Optional<Post> findById(Long id);
 
-    List<Post> findByCategory(String category);
+    List<Post> findByUrl(String url);
     void save(Post post);
     void deleteById(Long id);
 }
