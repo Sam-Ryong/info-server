@@ -1,5 +1,6 @@
 package samryong.blogserver.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class PostController {
     }
 
     @PostMapping
-    public Post createPost(@RequestBody Post post) {
+    public Post createPost(@RequestBody Post post) throws JsonProcessingException {
         return postService.createPost(post);
     }
 
@@ -37,6 +38,8 @@ public class PostController {
             return ResponseEntity.ok(postService.updatePost(id, post));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
     }
 

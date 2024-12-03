@@ -1,9 +1,11 @@
 package samryong.blogserver.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import samryong.blogserver.model.Post;
 import samryong.blogserver.repository.PostRepository;
+import samryong.blogserver.webclient.NotionClient;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,18 +27,23 @@ public class PostService {
         return postRepository.findByUrl(url);
     }
 
-    public Post createPost(Post post) {
+    public Post createPost(Post post) throws JsonProcessingException {
+        NotionClient notionClient = new NotionClient();
+        post.setContent(notionClient.getNotionDocument(post.getUrl()));
         post.setId(System.currentTimeMillis());
         post.setCreatedAt(LocalDateTime.now());
         postRepository.save(post);
         return post;
     }
 
-    public Post updatePost(Long id, Post updatedPost) {
+    public Post updatePost(Long id, Post updatedPost) throws JsonProcessingException {
         Optional<Post> existingPost = postRepository.findById(id);
         if (existingPost.isPresent()) {
+            NotionClient notionClient = new NotionClient();
             Post post = existingPost.get();
-            postRepository.save(post);
+            post.setTitle(updatedPost.getTitle());
+            post.setTag(updatedPost.getTag());
+            post.setContent(notionClient.getNotionDocument(post.getUrl()));
             return post;
         }
         throw new RuntimeException("Post not found");
