@@ -50,21 +50,6 @@ samryong-blogserver/
 |--------|------------|------|
 | `GET`  | `/api/visit` | 방문자 수 조회 및 증가 |
 
-## 🛠️ 실행 방법
-### 1️⃣ 프로젝트 클론
-```sh
-git clone https://github.com/사용자명/samryong-blogserver.git
-cd samryong-blogserver
-```
-
-### 2️⃣ 빌드 및 실행
-```sh
-./mvnw spring-boot:run
-```
-또는
-```sh
-mvn spring-boot:run
-```
 
 ### 3️⃣ API 테스트
 로컬 서버가 실행되면 아래 주소에서 API를 호출할 수 있습니다.
